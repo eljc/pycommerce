@@ -8,3 +8,7 @@ class HomeView(ListView):
     }
     model = Item
     template_name = "home.html"
+
+class ItemDetailView(DetailView):
+    model = Item
+    template_name = "product.html"
