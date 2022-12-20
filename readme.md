@@ -2,6 +2,6 @@
 
 ### Django Ecommerce
 
-####Code Blocks
+#### Code Blocks
    
-    `$ pip install -r requirements.txt`
+    $ pip install -r requirements.txt
