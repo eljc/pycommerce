@@ -10,6 +10,7 @@ class HomeView(ListView):
         'items': Item.objects.all()
     }
     model = Item
+    paginate_by = 5
     template_name = "home.html"
 
 class ItemDetailView(DetailView):
