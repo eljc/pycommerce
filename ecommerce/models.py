@@ -38,6 +38,7 @@ class Item(models.Model):
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     slug = models.SlugField()
     description = models.TextField()
+    image = models.ImageField(blank=True, null=True)
     
     def __str__(self):
         return self.title
@@ -132,4 +133,10 @@ def userprofile_receiver(sender, instance, created, *args, **kwargs):
     if created:
         userprofile = UserProfile.objects.create(user=instance)
 
-post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)        
+post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.code
