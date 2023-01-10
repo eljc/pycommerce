@@ -1,14 +1,14 @@
 import random
 import string
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import Item, Order, OrderItem, Address, UserProfile, Payment, Coupon
+from .models import Item, Order, OrderItem, Address, UserProfile, Payment, Coupon, Refund
 from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import CheckoutForm, PaymentForm, CouponForm
+from .forms import CheckoutForm, PaymentForm, CouponForm, RefundForm
 import stripe
 
 stripe.api_key = "sk_test_51MMzv9HKys4uGADzsNJpSnDROpRhkDDpX8Ck4DYfJ0nqPAZkONtWmSGZ1ewfTC435XqMzqtL1whIcAupb0mBU55r00gaIDP7a6"
@@ -19,6 +19,9 @@ def is_valid_form(values):
         if field == '':
             valid = False
     return valid
+
+def create_ref_code():
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 class HomeView(ListView):
     context = {
@@ -465,3 +468,35 @@ class AddCouponView(View):
                 messages.info(self.request, "You do not have an active order")
                 return redirect("checkout")
     
+class RequestRefundView(View):
+    def get(self, *args, **kargs):
+        form = RefundForm()
+        context = {
+            'form': form
+        }
+        return render(self.request, "request_refund.html", context)
+    
+    def post(self, *args, **kargs):
+        form = RefundForm(self.request.POST)
+        if form.is_valid():
+            ref_code = form.cleaned_data.get('ref_code')
+            message = form.cleaned_data.get('message')
+            email = form.cleaned_data.get('email')
+            try:
+                order = Order.objects.get(ref_code=ref_code)
+                order.refund_requested = True
+                order.save()
+                
+                 # store the refund
+                refund = Refund()
+                refund.order = order
+                refund.reason = message
+                refund.email = email
+                refund.save()
+
+                messages.info(self.request, "Your request was received.")
+                return redirect("request-refund")
+
+            except ObjectDoesNotExist:
+                messages.info(self.request, "This order does not exist.")
+                return redirect("request-refund")

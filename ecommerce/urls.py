@@ -8,7 +8,8 @@ from .views import (HomeView,
     remove_single_item_from_cart, 
     CheckoutView, 
     PaymentView,
-    AddCouponView)
+    AddCouponView,
+    RequestRefundView)
 
 urlpatterns = [    
     path('', HomeView.as_view(), name='home'),
@@ -21,5 +22,6 @@ urlpatterns = [
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
     path('add-coupon/', AddCouponView.as_view(), name='add-coupon'),
+    path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
     
 ]
