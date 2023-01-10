@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CheckoutForm, PaymentForm, CouponForm, RefundForm
 import stripe
 
-stripe.api_key = "sk_test_51MMzv9HKys4uGADzsNJpSnDROpRhkDDpX8Ck4DYfJ0nqPAZkONtWmSGZ1ewfTC435XqMzqtL1whIcAupb0mBU55r00gaIDP7a6"
+stripe.api_key = ""
 
 def is_valid_form(values):
     valid = True
@@ -54,7 +54,7 @@ class PaymentView(View):
             context = {
                 'order': order,
                 'DISPLAY_COUPON_FORM': False,
-                'STRIPE_PUBLIC_KEY' :  'pk_test_51MMzv9HKys4uGADz3D3zs0dbVERDNrmtmppejCvuvnYTtzmCxvRSdEbL6LCBIdso7iLXVv6M5assQ9R4aFP0ZVaF00wCK4N57q'
+                'STRIPE_PUBLIC_KEY' :  ''
             }
             userprofile = self.request.user.userprofile
             if userprofile.one_click_purchasing:
