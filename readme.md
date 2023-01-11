@@ -24,5 +24,7 @@ $ python manage.py runserver
 
 shop http://localhost:8000/
 
+Access admin for create items
 admin http://localhost:8000/admin
-Create items
+
+Thanks [https://www.freecodecamp.org](freeCodeCamp.org)

@@ -95,7 +95,6 @@ class PaymentView(View):
                     customer = stripe.Customer.create(
                         email=self.request.user.email,
                     )
-                    print('token:', token)
                     customer.create(source=token)
                     #customer.sources.create(source=token)
                     userprofile.stripe_customer_id = customer['id']
@@ -156,7 +155,6 @@ class PaymentView(View):
 
             except stripe.error.InvalidRequestError as e:
                 # Invalid parameters were supplied to Stripe's API
-                print(e)
                 messages.warning(self.request, "Invalid parameters")
                 return redirect("/")
 
@@ -313,7 +311,6 @@ class CheckoutView(View):
                 use_default_shipping = form.cleaned_data.get(
                     'use_default_shipping')
                 if use_default_shipping:
-                    print("Using the defualt shipping address")
                     address_qs = Address.objects.filter(
                         user=self.request.user,
                         address_type='S',
@@ -328,7 +325,6 @@ class CheckoutView(View):
                             self.request, "No default shipping address available")
                         return redirect('checkout')
                 else:
-                    print("User is entering a new shipping address")
                     shipping_address1 = form.cleaned_data.get(
                         'shipping_address')
                     shipping_address2 = form.cleaned_data.get(
@@ -376,7 +372,6 @@ class CheckoutView(View):
                     order.save()
 
                 elif use_default_billing:
-                    print("Using the defualt billing address")
                     address_qs = Address.objects.filter(
                         user=self.request.user,
                         address_type='B',
@@ -391,7 +386,6 @@ class CheckoutView(View):
                             self.request, "No default billing address available")
                         return redirect('checkout')
                 else:
-                    print("User is entering a new billing address")
                     billing_address1 = form.cleaned_data.get(
                         'billing_address')
                     billing_address2 = form.cleaned_data.get(

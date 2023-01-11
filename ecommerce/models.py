@@ -85,17 +85,17 @@ class OrderItem(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(get_user_model(),
                              on_delete=models.CASCADE)
-    ref_code = models.CharField(max_length=20)
+    ref_code = models.CharField(max_length=20, blank=True, null=True)
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
     billing_address = models.ForeignKey('Address',                                    
-            on_delete=models.SET_NULL, blank=True, null=True)    
+            related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)    
+    shipping_address = models.ForeignKey('Address', 
+            related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
     payment = models.ForeignKey('Payment',
             on_delete=models.SET_NULL, blank=True, null=True)    
-    shipping_address = models.ForeignKey(
-        'Address', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
     coupon = models.ForeignKey('Coupon', on_delete=models.SET_NULL, blank=True, null=True)
     beign_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)    
