@@ -27,4 +27,4 @@ shop http://localhost:8000/
 Access admin for create items
 admin http://localhost:8000/admin
 
-Thanks [https://www.freecodecamp.org](freeCodeCamp.org)
+Thanks [freeCodeCamp.org](https://www.freecodecamp.org)
